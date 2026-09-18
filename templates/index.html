@@ -364,25 +364,16 @@
             <div class="titulo-secao">1. Escolha as Atividades Diárias:</div>
             <div class="grid-cards" id="grade-cards">
                 
-                {% if atividades %}
-                    {% for ativ in atividades %}
-                    <div class="card-opcao" onclick="adicionarAtividade('{{ ativ.nome }}', '{{ ativ.icone }}', false)">
-                        <span class="icone">{{ ativ.icone }}</span>
-                        <span>{{ ativ.nome }}</span>
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="card-opcao" onclick="adicionarAtividade('Acordar', '☀️', false)"><span class="icone">☀️</span><span>Acordar</span></div>
-                    <div class="card-opcao" onclick="adicionarAtividade('Escovar os Dentes', '🪥', false)"><span class="icone">🪥</span><span>Escovar os Dentes</span></div>
-                    <div class="card-opcao" onclick="adicionarAtividade('Tomar Café', '🥛', false)"><span class="icone">🥛</span><span>Tomar Café</span></div>
-                    <div class="card-opcao" onclick="adicionarAtividade('Ir para a Escola', '🎒', false)"><span class="icone">🎒</span><span>Ir para a Escola</span></div>
-                    <div class="card-opcao" onclick="adicionarAtividade('Terapia', '🧩', false)"><span class="icone">🧩</span><span>Terapia</span></div>
-                    <div class="card-opcao" onclick="adicionarAtividade('Almoçar', '🍽️', false)"><span class="icone">🍽️</span><span>Almoçar</span></div>
-                    <div class="card-opcao" onclick="adicionarAtividade('Brincar / Descanso', '🧸', false)"><span class="icone">🧸</span><span>Brincar / Descanso</span></div>
-                    <div class="card-opcao" onclick="adicionarAtividade('Tomar Banho', '🛁', false)"><span class="icone">🛁</span><span>Tomar Banho</span></div>
-                    <div class="card-opcao" onclick="adicionarAtividade('Jantar', '🍲', false)"><span class="icone">🍲</span><span>Jantar</span></div>
-                    <div class="card-opcao" onclick="adicionarAtividade('Dormir', '🌙', false)"><span class="icone">🌙</span><span>Dormir</span></div>
-                {% endif %}
+                <div class="card-opcao" onclick="adicionarAtividade('Acordar', '☀️', false)"><span class="icone">☀️</span><span>Acordar</span></div>
+                <div class="card-opcao" onclick="adicionarAtividade('Escovar os Dentes', '🪥', false)"><span class="icone">🪥</span><span>Escovar os Dentes</span></div>
+                <div class="card-opcao" onclick="adicionarAtividade('Tomar Café', '🥛', false)"><span class="icone">🥛</span><span>Tomar Café</span></div>
+                <div class="card-opcao" onclick="adicionarAtividade('Ir para a Escola', '🎒', false)"><span class="icone">🎒</span><span>Ir para a Escola</span></div>
+                <div class="card-opcao" onclick="adicionarAtividade('Terapia', '🧩', false)"><span class="icone">🧩</span><span>Terapia</span></div>
+                <div class="card-opcao" onclick="adicionarAtividade('Almoçar', '🍽️', false)"><span class="icone">🍽️</span><span>Almoçar</span></div>
+                <div class="card-opcao" onclick="adicionarAtividade('Brincar / Descanso', '🧸', false)"><span class="icone">🧸</span><span>Brincar / Descanso</span></div>
+                <div class="card-opcao" onclick="adicionarAtividade('Tomar Banho', '🛁', false)"><span class="icone">🛁</span><span>Tomar Banho</span></div>
+                <div class="card-opcao" onclick="adicionarAtividade('Jantar', '🍲', false)"><span class="icone">🍲</span><span>Jantar</span></div>
+                <div class="card-opcao" onclick="adicionarAtividade('Dormir', '🌙', false)"><span class="icone">🌙</span><span>Dormir</span></div>
 
                 <!-- Botão de Adicionar Nova Imagem (+) -->
                 <div class="card-opcao card-adicionar" onclick="abrirModalPersonalizado()">
