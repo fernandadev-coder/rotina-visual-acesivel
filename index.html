@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotina Visual Acessível</title>
+    <style>
+        :root {
+            --azul-primario: #0d47a1;
+            --azul-claro: #e3f2fd;
+            --verde: #2e7d32;
+            --cinza-fundo: #f8f9fa;
+            --texto: #212529;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 20px 20px 0 20px;
+            background-color: var(--cinza-fundo);
+            color: var(--texto);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: var(--azul-primario);
+            margin: 0 0 8px 0;
+            font-size: 26px;
+        }
+
+        p.instrucao {
+            font-size: 18px;
+            color: #495057;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 950px;
+            width: 100%;
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        .painel-selecao {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .titulo-secao {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--azul-primario);
+        }
+
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 15px;
+        }
+
+        .card-opcao {
+            background-color: var(--azul-claro);
+            border: 2px solid #90caf9;
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 115px;
+            transition: transform 0.15s, background-color 0.15s;
+            box-sizing: border-box;
+        }
+
+        .card-opcao:hover, .card-opcao:active {
+            transform: scale(1.05);
+            background-color: #bbdefb;
+            border-color: var(--azul-primario);
+        }
+
+        /* Card especial de Adicionar (+) */
+        .card-adicionar {
+            background-color: #f1f8e9;
+            border: 2px dashed #7cb342;
+            color: #33691e;
+        }
+
+        .card-adicionar:hover {
+            background-color: #dcedc8;
+            border-color: #558b2f;
+        }
+
+        .icone {
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px;
+            margin-bottom: 6px;
+        }
+
+        .img-selecao {
+            width: 100%;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+
+        /* Área da Rotina Pronta */
+        .painel-resultado {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            border: 3px dashed #90caf9;
+            min-height: 200px;
+        }
+
+        .rotina-lista {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .item-rotina {
+            background-color: #ffffff;
+            border: 3px solid var(--verde);
+            border-radius: 12px;
+            padding: 8px 6px;
+            text-align: center;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .img-customizada {
+            width: 100%;
+            height: 92px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 4px;
+        }
+
+        .item-rotina .icone-rotina {
+            font-size: 55px;
+            height: 92px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+
+        .item-rotina strong {
+            font-size: 13px;
+            line-height: 1.2;
+            color: #1a1a1a;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-remover {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Botões de Ação */
+        .area-acoes {
+            text-align: center;
+            margin-top: 25px;
+            margin-bottom: 30px;
+        }
+
+        .btn-acao {
+            background-color: var(--verde);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 16px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+            margin: 5px;
+        }
+
+        .btn-acao:hover {
+            background-color: #1b5e20;
+        }
+
+        .btn-limpar {
+            background-color: #757575;
+            color: white;
+            font-size: 16px;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        /* Modal para Adicionar Imagem Personalizada */
+        .modal-fundo {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-conteudo {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .modal-conteudo h3 {
+            margin-top: 0;
+            color: var(--azul-primario);
+        }
+
+        .campo-form {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .campo-form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .campo-form input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .modal-botoes {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-salvar-modal {
+            background: var(--verde);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-cancelar-modal {
+            background: #e0e0e0;
+            color: #333;
+            border: none;
+            padding: 10px 18px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* Rodapé Institucional */
+        footer {
+            text-align: center;
+            padding: 18px;
+            margin-top: auto;
+            border-top: 1px solid #dcdcdc;
+            color: #555555;
+            font-size: 15px;
+            font-weight: 600;
+            background-color: #ffffff;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 -2px 6px rgba(0,0,0,0.04);
+        }
+
+        /* Estilos de Impressão e PDF */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .painel-selecao, .area-acoes, header p.instrucao, .btn-remover, .modal-fundo, footer {
+                display: none !important;
+            }
+            .painel-resultado {
+                border: 2px solid #000;
+                box-shadow: none;
+            }
+            .item-rotina {
+                border: 2px solid #000;
+            }
+            header {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Quadro de Rotina Visual Acessível</h1>
+            <p class="instrucao">Toque nas atividades abaixo para montar a rotina visual:</p>
+        </header>
+
+        <!-- Seleção das Atividades -->
+        <section class="painel-selecao">
+            <div class="titulo-secao">1. Escolha as Atividades Diárias:</div>
+            <div class="grid-cards" id="grade-cards">
+                
+                {% if atividades %}
+                    {% for ativ in atividades %}
+                    <div class="card-opcao" onclick="adicionarAtividade('{{ ativ.nome }}', '{{ ativ.icone }}', false)">
+                        <span class="icone">{{ ativ.icone }}</span>
+                        <span>{{ ativ.nome }}</span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="card-opcao" onclick="adicionarAtividade('Acordar', '☀️', false)"><span class="icone">☀️</span><span>Acordar</span></div>
+                    <div class="card-opcao" onclick="adicionarAtividade('Escovar os Dentes', '🪥', false)"><span class="icone">🪥</span><span>Escovar os Dentes</span></div>
+                    <div class="card-opcao" onclick="adicionarAtividade('Tomar Café', '🥛', false)"><span class="icone">🥛</span><span>Tomar Café</span></div>
+                    <div class="card-opcao" onclick="adicionarAtividade('Ir para a Escola', '🎒', false)"><span class="icone">🎒</span><span>Ir para a Escola</span></div>
+                    <div class="card-opcao" onclick="adicionarAtividade('Terapia', '🧩', false)"><span class="icone">🧩</span><span>Terapia</span></div>
+                    <div class="card-opcao" onclick="adicionarAtividade('Almoçar', '🍽️', false)"><span class="icone">🍽️</span><span>Almoçar</span></div>
+                    <div class="card-opcao" onclick="adicionarAtividade('Brincar / Descanso', '🧸', false)"><span class="icone">🧸</span><span>Brincar / Descanso</span></div>
+                    <div class="card-opcao" onclick="adicionarAtividade('Tomar Banho', '🛁', false)"><span class="icone">🛁</span><span>Tomar Banho</span></div>
+                    <div class="card-opcao" onclick="adicionarAtividade('Jantar', '🍲', false)"><span class="icone">🍲</span><span>Jantar</span></div>
+                    <div class="card-opcao" onclick="adicionarAtividade('Dormir', '🌙', false)"><span class="icone">🌙</span><span>Dormir</span></div>
+                {% endif %}
+
+                <!-- Botão de Adicionar Nova Imagem (+) -->
+                <div class="card-opcao card-adicionar" onclick="abrirModalPersonalizado()">
+                    <span class="icone" style="font-size: 42px; font-weight: bold;">+</span>
+                    <span>Criar Novo</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Rotina Selecionada -->
+        <section class="painel-resultado" id="area-impressao">
+            <div class="titulo-secao">2. Rotina do Dia:</div>
+            <p id="msg-vazia" style="color: #666; font-style: italic;">Nenhuma atividade adicionada ainda. Clique nas opções acima para começar!</p>
+            <div class="rotina-lista" id="lista-rotina"></div>
+        </section>
+
+        <!-- Ações -->
+        <div class="area-acoes">
+            <button class="btn-acao" onclick="baixarRotina()">📥 Salvar / Baixar em PDF ou Imprimir</button>
+            <button class="btn-limpar" onclick="limparTudo()">🗑️ Limpar Rotina</button>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer>
+        Criado por Fernanda Roberta Alves RU:5225020
+    </footer>
+
+    <!-- Modal para Upload de Foto Personalizada -->
+    <div class="modal-fundo" id="modal-personalizado">
+        <div class="modal-conteudo">
+            <h3>Nova Atividade Personalizada</h3>
+            
+            <div class="campo-form">
+                <label for="nome-custom">Nome da Atividade:</label>
+                <input type="text" id="nome-custom" placeholder="Ex: Matheus Alvares, Escola, Terapia">
+            </div>
+
+            <div class="campo-form">
+                <label for="foto-custom">Escolha a Foto/Imagem (PNG ou JPG):</label>
+                <input type="file" id="foto-custom" accept="image/png, image/jpeg, image/jpg">
+            </div>
+
+            <div class="modal-botoes">
+                <button class="btn-cancelar-modal" onclick="fecharModalPersonalizado()">Cancelar</button>
+                <button class="btn-salvar-modal" onclick="salvarItemPersonalizado()">Adicionar Card</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function adicionarAtividade(nome, conteudoVisual, isImagem) {
+            const container = document.getElementById("lista-rotina");
+            const msgVazia = document.getElementById("msg-vazia");
+            msgVazia.style.display = "none";
+
+            const div = document.createElement("div");
+            div.className = "item-rotina";
+
+            let visualHtml = isImagem 
+                ? `<img src="${conteudoVisual}" class="img-customizada" alt="${nome}">`
+                : `<span class="icone-rotina">${conteudoVisual}</span>`;
+
+            div.innerHTML = `
+                <button class="btn-remover" title="Remover" onclick="this.parentElement.remove(); verificarVazio();">×</button>
+                ${visualHtml}
+                <strong title="${nome}">${nome}</strong>
+            `;
+            container.appendChild(div);
+        }
+
+        function verificarVazio() {
+            const container = document.getElementById("lista-rotina");
+            if (container.children.length === 0) {
+                document.getElementById("msg-vazia").style.display = "block";
+            }
+        }
+
+        function limparTudo() {
+            document.getElementById("lista-rotina").innerHTML = "";
+            document.getElementById("msg-vazia").style.display = "block";
+        }
+
+        function baixarRotina() {
+            const container = document.getElementById("lista-rotina");
+            if (container.children.length === 0) {
+                alert("Por favor, adicione ao menos uma atividade antes de exportar.");
+                return;
+            }
+            window.print();
+        }
+
+        function abrirModalPersonalizado() {
+            document.getElementById("modal-personalizado").style.display = "flex";
+            document.getElementById("nome-custom").value = "";
+            document.getElementById("foto-custom").value = "";
+        }
+
+        function fecharModalPersonalizado() {
+            document.getElementById("modal-personalizado").style.display = "none";
+        }
+
+        function salvarItemPersonalizado() {
+            const nomeInput = document.getElementById("nome-custom").value.trim();
+            const arquivoInput = document.getElementById("foto-custom").files[0];
+
+            if (!nomeInput) {
+                alert("Por favor, digite o nome da atividade.");
+                return;
+            }
+
+            if (!arquivoInput) {
+                alert("Por favor, selecione uma imagem PNG ou JPG.");
+                return;
+            }
+
+            const leitor = new FileReader();
+            leitor.onload = function(e) {
+                const urlImagem = e.target.result;
+
+                const grade = document.getElementById("grade-cards");
+                const cardNovo = document.createElement("div");
+                cardNovo.className = "card-opcao";
+                cardNovo.onclick = function() {
+                    adicionarAtividade(nomeInput, urlImagem, true);
+                };
+                cardNovo.innerHTML = `
+                    <img src="${urlImagem}" class="img-selecao" alt="${nomeInput}">
+                    <span>${nomeInput}</span>
+                `;
+
+                const botaoMais = document.querySelector(".card-adicionar");
+                grade.insertBefore(cardNovo, botaoMais);
+
+                adicionarAtividade(nomeInput, urlImagem, true);
+
+                fecharModalPersonalizado();
+            };
+
+            leitor.readAsDataURL(arquivoInput);
+        }
+    </script>
+</body>
+</html>
